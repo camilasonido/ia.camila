@@ -60,7 +60,7 @@
     
     <h2 style="text-align: center; color: #333; margin-bottom: 20px;">Crea tu usuario</h2>
     
-    <form action="#" method="post">
+    <form id="registerForm" action="#" method="post">
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" required>
         
@@ -105,10 +105,22 @@
     </form>
 
     <script>
-        document.querySelector('form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Previene el envío por defecto
-            
-            // Obtener los valores del formulario
+        function obtenerUsuarios() {
+            return JSON.parse(localStorage.getItem('usuarios')) || [];
+        }
+
+        function guardarUsuarios(usuarios) {
+            localStorage.setItem('usuarios', JSON.stringify(usuarios));
+        }
+
+        function guardarUsuarioActivo(usuario) {
+            localStorage.setItem('usuarioActivo', JSON.stringify(usuario));
+            localStorage.setItem('datosUsuario', JSON.stringify(usuario));
+        }
+
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
             const nombre = document.getElementById('nombre').value;
             const rut = document.getElementById('rut').value;
             const telefono = document.getElementById('telefono').value;
@@ -117,9 +129,8 @@
             const direccion = document.getElementById('direccion').value;
             const fechaNacimiento = document.getElementById('fecha_nacimiento').value;
             const opcion = document.getElementById('opcion').value;
-            
-            // Crear un objeto con los datos
-            const datos = {
+
+            const usuario = {
                 nombre: nombre,
                 rut: rut,
                 telefono: telefono,
@@ -129,32 +140,34 @@
                 fechaNacimiento: fechaNacimiento,
                 opcion: opcion
             };
-            
-            // Guardar en localStorage
-            localStorage.setItem('datosUsuario', JSON.stringify(datos));
-            
-            // Mostrar confirmación
+
+            const usuarios = obtenerUsuarios();
+            const existe = usuarios.some(u => u.rut === rut);
+            if (existe) {
+                alert('Este RUT ya está registrado. Usa otro o inicia sesión.');
+                return;
+            }
+
+            usuarios.push(usuario);
+            guardarUsuarios(usuarios);
+            guardarUsuarioActivo(usuario);
+
             alert('Usuario creado exitosamente. Redirigiendo al menú...');
-            
-            // Limpiar el formulario
-            document.querySelector('form').reset();
-            
-            // Redirigir a menu.html
+            document.getElementById('registerForm').reset();
             window.location.href = 'menu.html';
         });
-        
-        // Manejar inicio de sesión
+
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            
+
             const loginRut = document.getElementById('loginRut').value;
             const loginPassword = document.getElementById('loginPassword').value;
-            
-            const datosGuardados = JSON.parse(localStorage.getItem('datosUsuario'));
-            
-            if (datosGuardados && datosGuardados.rut === loginRut && datosGuardados.password === loginPassword) {
+            const usuarios = obtenerUsuarios();
+            const usuario = usuarios.find(u => u.rut === loginRut && u.password === loginPassword);
+
+            if (usuario) {
+                guardarUsuarioActivo(usuario);
                 alert('Inicio de sesión exitoso. Redirigiendo al menú...');
-                // Redirigir a menu.html
                 window.location.href = 'menu.html';
             } else {
                 alert('RUT o contraseña incorrectos.');

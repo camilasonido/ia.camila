@@ -132,25 +132,26 @@
     
     <script>
         // Mostrar info del usuario
-        const datosUsuario = JSON.parse(localStorage.getItem('datosUsuario'));
-        if (!datosUsuario) {
+        const usuarioActivo = JSON.parse(localStorage.getItem('usuarioActivo'));
+        if (!usuarioActivo) {
             window.location.href = 'index.html';
         } else {
             document.getElementById('userInfo').innerHTML = `
-                <p><strong>Nombre:</strong> ${datosUsuario.nombre}</p>
-                <p><strong>RUT:</strong> ${datosUsuario.rut}</p>
-                <p><strong>Versión:</strong> ${datosUsuario.opcion}</p>
+                <p><strong>Nombre:</strong> ${usuarioActivo.nombre}</p>
+                <p><strong>RUT:</strong> ${usuarioActivo.rut}</p>
+                <p><strong>Versión:</strong> ${usuarioActivo.opcion}</p>
                 <button class="logout-button" id="logoutButton">Cerrar sesión</button>
             `;
 
             document.getElementById('logoutButton').addEventListener('click', function() {
+                localStorage.removeItem('usuarioActivo');
                 localStorage.removeItem('datosUsuario');
                 window.location.href = 'index.html';
             });
         }
         
-        // Cargar entradas guardadas
-        let entradas = JSON.parse(localStorage.getItem('entradasDiario')) || [];
+        const entradasKey = usuarioActivo ? `entradasDiario_${usuarioActivo.rut}` : 'entradasDiario';
+        let entradas = JSON.parse(localStorage.getItem(entradasKey)) || [];
         mostrarEntradas();
         
         // Manejar envío del formulario
@@ -169,7 +170,7 @@
             };
             
             entradas.push(entrada);
-            localStorage.setItem('entradasDiario', JSON.stringify(entradas));
+            localStorage.setItem(entradasKey, JSON.stringify(entradas));
             
             alert('Entrada guardada exitosamente.');
             

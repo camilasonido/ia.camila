@@ -69,14 +69,14 @@
     </div>
 
     <script>
-        const datosUsuario = JSON.parse(localStorage.getItem('datosUsuario'));
-        if (!datosUsuario) {
+        const usuarioActivo = JSON.parse(localStorage.getItem('usuarioActivo'));
+        if (!usuarioActivo) {
             window.location.href = 'index.html';
         } else {
             document.getElementById('userInfo').innerHTML = `
-                <p><strong>Bienvenido:</strong> ${datosUsuario.nombre}</p>
-                <p><strong>RUT:</strong> ${datosUsuario.rut}</p>
-                <p><strong>Versión:</strong> ${datosUsuario.opcion}</p>
+                <p><strong>Bienvenido:</strong> ${usuarioActivo.nombre}</p>
+                <p><strong>RUT:</strong> ${usuarioActivo.rut}</p>
+                <p><strong>Versión:</strong> ${usuarioActivo.opcion}</p>
             `;
         }
 
@@ -90,6 +90,7 @@
             window.location.href = 'videos.html';
         });
         document.getElementById('btnLogout').addEventListener('click', function() {
+            localStorage.removeItem('usuarioActivo');
             localStorage.removeItem('datosUsuario');
             window.location.href = 'index.html';
         });
