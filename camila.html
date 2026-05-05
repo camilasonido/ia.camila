@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Web de Camila</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #ff69b4; /* Rosa */
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Página Web de Camila</h1>
+    
+    <form action="#" method="post">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+        
+        <label for="rut">RUT:</label>
+        <input type="text" id="rut" name="rut" required>
+        
+        <label for="telefono">Número de Teléfono:</label>
+        <input type="tel" id="telefono" name="telefono" required>
+        
+        <label for="direccion">Dirección:</label>
+        <input type="text" id="direccion" name="direccion" required>
+        
+        <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+        <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
+        
+        <label for="opcion">Elige una opción:</label>
+        <select id="opcion" name="opcion" required>
+            <option value="">Selecciona una opción</option>
+            <option value="carrito_profesional">Carrito Profesional</option>
+            <option value="principiante">Principiante</option>
+            <option value="invitado">Invitado</option>
+        </select>
+        
+        <button type="submit">Enviar</button>
+    </form>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Previene el envío por defecto
+            
+            // Obtener los valores del formulario
+            const nombre = document.getElementById('nombre').value;
+            const rut = document.getElementById('rut').value;
+            const telefono = document.getElementById('telefono').value;
+            const direccion = document.getElementById('direccion').value;
+            const fechaNacimiento = document.getElementById('fecha_nacimiento').value;
+            const opcion = document.getElementById('opcion').value;
+            
+            // Crear un objeto con los datos
+            const datos = {
+                nombre: nombre,
+                rut: rut,
+                telefono: telefono,
+                direccion: direccion,
+                fechaNacimiento: fechaNacimiento,
+                opcion: opcion
+            };
+            
+            // Guardar en localStorage (persiste en el navegador)
+            localStorage.setItem('datosUsuario', JSON.stringify(datos));
+            
+            // Mostrar confirmación
+            alert('Datos guardados exitosamente:\n' + JSON.stringify(datos, null, 2));
+            
+            // Limpiar el formulario
+            document.querySelector('form').reset();
+        });
+    </script>
+</body>
+</html>
