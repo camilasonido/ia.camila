@@ -106,7 +106,13 @@
 
     <script>
         function obtenerUsuarios() {
-            return JSON.parse(localStorage.getItem('usuarios')) || [];
+            const usuariosGuardados = JSON.parse(localStorage.getItem('usuarios')) || [];
+            if (usuariosGuardados.length > 0) {
+                return usuariosGuardados;
+            }
+
+            const usuarioAntiguo = JSON.parse(localStorage.getItem('datosUsuario'));
+            return usuarioAntiguo ? [usuarioAntiguo] : [];
         }
 
         function guardarUsuarios(usuarios) {
@@ -116,6 +122,14 @@
         function guardarUsuarioActivo(usuario) {
             localStorage.setItem('usuarioActivo', JSON.stringify(usuario));
             localStorage.setItem('datosUsuario', JSON.stringify(usuario));
+        }
+
+        function obtenerUsuarioActivo() {
+            const usuarioActivo = JSON.parse(localStorage.getItem('usuarioActivo'));
+            if (usuarioActivo) {
+                return usuarioActivo;
+            }
+            return JSON.parse(localStorage.getItem('datosUsuario'));
         }
 
         document.getElementById('registerForm').addEventListener('submit', function(event) {
