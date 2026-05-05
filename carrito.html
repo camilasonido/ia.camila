@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compra</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #ff69b4;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #555;
+            margin-bottom: 30px;
+        }
+        .card {
+            max-width: 600px;
+            margin: 0 auto 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .card h2 {
+            margin-top: 0;
+        }
+        .back-button {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        .back-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Carrito de Compra</h1>
+    <p class="subtitle">Tu espacio para reservar productos</p>
+    <div class="card">
+        <h2>Productos disponibles</h2>
+        <ul>
+            <li>Carrito Profesional - $25.000</li>
+            <li>Carrito para Principiante - $12.000</li>
+            <li>Entrada Invitado - Gratis</li>
+        </ul>
+        <p>Esta sección es un ejemplo de carrito de compra simple.</p>
+    </div>
+    <button class="back-button" onclick="window.location.href='menu.html'">Volver al Menú</button>
+</body>
+</html>

@@ -134,13 +134,13 @@
             localStorage.setItem('datosUsuario', JSON.stringify(datos));
             
             // Mostrar confirmación
-            alert('Usuario creado exitosamente. Redirigiendo al diario...');
+            alert('Usuario creado exitosamente. Redirigiendo al menú...');
             
             // Limpiar el formulario
             document.querySelector('form').reset();
             
-            // Redirigir a diario.html
-            window.location.href = 'diario.html';
+            // Redirigir a menu.html
+            window.location.href = 'menu.html';
         });
         
         // Manejar inicio de sesión
@@ -153,9 +153,9 @@
             const datosGuardados = JSON.parse(localStorage.getItem('datosUsuario'));
             
             if (datosGuardados && datosGuardados.rut === loginRut && datosGuardados.password === loginPassword) {
-                alert('Inicio de sesión exitoso. Redirigiendo al diario...');
-                // Redirigir a diario.html
-                window.location.href = 'diario.html';
+                alert('Inicio de sesión exitoso. Redirigiendo al menú...');
+                // Redirigir a menu.html
+                window.location.href = 'menu.html';
             } else {
                 alert('RUT o contraseña incorrectos.');
             }

@@ -86,6 +86,21 @@
         .logout-button:hover {
             background-color: #c0392b;
         }
+        .back-button {
+            display: block;
+            width: 180px;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        .back-button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
@@ -108,6 +123,8 @@
         <button type="submit">Guardar Entrada</button>
     </form>
     
+    <button class="back-button" onclick="window.location.href='menu.html'">Volver al Menú</button>
+    
     <div class="entries" id="entries">
         <h2>Entradas Anteriores</h2>
         <!-- Aquí se mostrarán las entradas -->
@@ -116,7 +133,9 @@
     <script>
         // Mostrar info del usuario
         const datosUsuario = JSON.parse(localStorage.getItem('datosUsuario'));
-        if (datosUsuario) {
+        if (!datosUsuario) {
+            window.location.href = 'index.html';
+        } else {
             document.getElementById('userInfo').innerHTML = `
                 <p><strong>Nombre:</strong> ${datosUsuario.nombre}</p>
                 <p><strong>RUT:</strong> ${datosUsuario.rut}</p>
