@@ -72,6 +72,20 @@
             padding-bottom: 10px;
             margin-bottom: 10px;
         }
+        .logout-button {
+            display: inline-block;
+            margin-top: 10px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .logout-button:hover {
+            background-color: #c0392b;
+        }
     </style>
 </head>
 <body>
@@ -107,7 +121,13 @@
                 <p><strong>Nombre:</strong> ${datosUsuario.nombre}</p>
                 <p><strong>RUT:</strong> ${datosUsuario.rut}</p>
                 <p><strong>Versión:</strong> ${datosUsuario.opcion}</p>
+                <button class="logout-button" id="logoutButton">Cerrar sesión</button>
             `;
+
+            document.getElementById('logoutButton').addEventListener('click', function() {
+                localStorage.removeItem('datosUsuario');
+                window.location.href = 'index.html';
+            });
         }
         
         // Cargar entradas guardadas
