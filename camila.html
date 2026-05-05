@@ -56,6 +56,10 @@
 <body>
     <h1>Página Web de Camila</h1>
     
+    <p style="text-align: center; font-size: 1.2em; color: #666; margin-bottom: 20px;">Esta página web es para guardar información como en un diario de vida</p>
+    
+    <h2 style="text-align: center; color: #333; margin-bottom: 20px;">Crea tu usuario</h2>
+    
     <form action="#" method="post">
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" required>
@@ -63,8 +67,11 @@
         <label for="rut">RUT:</label>
         <input type="text" id="rut" name="rut" required>
         
-        <label for="telefono">Número de Teléfono:</label>
+        <label for="telefono">Teléfono:</label>
         <input type="tel" id="telefono" name="telefono" required>
+        
+        <label for="correo">Correo:</label>
+        <input type="email" id="correo" name="correo" required>
         
         <label for="direccion">Dirección:</label>
         <input type="text" id="direccion" name="direccion" required>
@@ -72,10 +79,10 @@
         <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
         <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
         
-        <label for="opcion">Elige una opción:</label>
+        <label for="opcion">Elige tu versión:</label>
         <select id="opcion" name="opcion" required>
-            <option value="">Selecciona una opción</option>
-            <option value="carrito_profesional">Carrito Profesional</option>
+            <option value="">Selecciona una versión</option>
+            <option value="profesional">Profesional</option>
             <option value="principiante">Principiante</option>
             <option value="invitado">Invitado</option>
         </select>
@@ -91,6 +98,7 @@
             const nombre = document.getElementById('nombre').value;
             const rut = document.getElementById('rut').value;
             const telefono = document.getElementById('telefono').value;
+            const correo = document.getElementById('correo').value;
             const direccion = document.getElementById('direccion').value;
             const fechaNacimiento = document.getElementById('fecha_nacimiento').value;
             const opcion = document.getElementById('opcion').value;
@@ -100,6 +108,7 @@
                 nombre: nombre,
                 rut: rut,
                 telefono: telefono,
+                correo: correo,
                 direccion: direccion,
                 fechaNacimiento: fechaNacimiento,
                 opcion: opcion
