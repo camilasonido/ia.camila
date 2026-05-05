@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diario de Vida</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #ff69b4;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .info {
+            max-width: 600px;
+            margin: 0 auto 20px;
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .entries {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .entry {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Diario de Vida</h1>
+    
+    <div class="info" id="userInfo">
+        <!-- Aquí se mostrará la info del usuario -->
+    </div>
+    
+    <form id="diaryForm">
+        <label for="titulo">Título:</label>
+        <input type="text" id="titulo" name="titulo" required>
+        
+        <label for="fecha">Fecha:</label>
+        <input type="date" id="fecha" name="fecha" required>
+        
+        <label for="contenido">Escribe tu entrada:</label>
+        <textarea id="contenido" name="contenido" rows="10" required></textarea>
+        
+        <button type="submit">Guardar Entrada</button>
+    </form>
+    
+    <div class="entries" id="entries">
+        <h2>Entradas Anteriores</h2>
+        <!-- Aquí se mostrarán las entradas -->
+    </div>
+    
+    <script>
+        // Mostrar info del usuario
+        const datosUsuario = JSON.parse(localStorage.getItem('datosUsuario'));
+        if (datosUsuario) {
+            document.getElementById('userInfo').innerHTML = `
+                <p><strong>Nombre:</strong> ${datosUsuario.nombre}</p>
+                <p><strong>RUT:</strong> ${datosUsuario.rut}</p>
+                <p><strong>Versión:</strong> ${datosUsuario.opcion}</p>
+            `;
+        }
+        
+        // Cargar entradas guardadas
+        let entradas = JSON.parse(localStorage.getItem('entradasDiario')) || [];
+        mostrarEntradas();
+        
+        // Manejar envío del formulario
+        document.getElementById('diaryForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const titulo = document.getElementById('titulo').value;
+            const fecha = document.getElementById('fecha').value;
+            const contenido = document.getElementById('contenido').value;
+            
+            const entrada = {
+                titulo: titulo,
+                fecha: fecha,
+                contenido: contenido,
+                timestamp: new Date().toISOString()
+            };
+            
+            entradas.push(entrada);
+            localStorage.setItem('entradasDiario', JSON.stringify(entradas));
+            
+            alert('Entrada guardada exitosamente.');
+            
+            // Limpiar formulario
+            document.getElementById('diaryForm').reset();
+            
+            // Mostrar entradas actualizadas
+            mostrarEntradas();
+        });
+        
+        function mostrarEntradas() {
+            const entriesDiv = document.getElementById('entries');
+            entriesDiv.innerHTML = '<h2>Entradas Anteriores</h2>';
+            
+            if (entradas.length === 0) {
+                entriesDiv.innerHTML += '<p>No hay entradas aún.</p>';
+                return;
+            }
+            
+            entradas.forEach((entrada, index) => {
+                const entryDiv = document.createElement('div');
+                entryDiv.className = 'entry';
+                entryDiv.innerHTML = `
+                    <h3>${entrada.titulo}</h3>
+                    <p><strong>Fecha:</strong> ${entrada.fecha}</p>
+                    <p>${entrada.contenido.replace(/\n/g, '<br>')}</p>
+                `;
+                entriesDiv.appendChild(entryDiv);
+            });
+        }
+    </script>
+</body>
+</html>
