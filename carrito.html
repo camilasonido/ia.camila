@@ -19,47 +19,243 @@
         .subtitle {
             text-align: center;
             color: #555;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
-        .card {
-            max-width: 600px;
+        .product-card, .cart-card {
+            max-width: 700px;
             margin: 0 auto 20px;
             background-color: white;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.12);
         }
-        .card h2 {
-            margin-top: 0;
+        .product-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
         }
-        .back-button {
-            display: block;
-            margin: 0 auto;
-            padding: 10px 20px;
-            font-size: 16px;
+        .product-info {
+            display: grid;
+            gap: 15px;
+        }
+        .product-info label {
+            font-weight: bold;
+            color: #333;
+        }
+        .product-info input {
+            width: 100px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        .product-info button {
+            width: 200px;
+            padding: 12px;
             border: none;
             border-radius: 8px;
             background-color: #4CAF50;
             color: white;
+            font-size: 16px;
             cursor: pointer;
         }
-        .back-button:hover {
+        .product-info button:hover {
             background-color: #45a049;
+        }
+        .cart-card h2 {
+            margin-top: 0;
+        }
+        .cart-items {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .cart-items th,
+        .cart-items td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .cart-items th {
+            background-color: #f7f7f7;
+        }
+        .cart-total {
+            text-align: right;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        .cart-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .cart-actions button {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            color: white;
+        }
+        .button-whatsapp {
+            background-color: #25D366;
+        }
+        .button-whatsapp:hover {
+            opacity: 0.9;
+        }
+        .button-back {
+            background-color: #4CAF50;
+        }
+        .button-back:hover {
+            background-color: #45a049;
+        }
+        .button-clear {
+            background-color: #e74c3c;
+        }
+        .button-clear:hover {
+            background-color: #c0392b;
+        }
+        .empty-cart {
+            padding: 15px;
+            background-color: #fff7e6;
+            border: 1px solid #ffd89b;
+            border-radius: 8px;
+            color: #8a6d3b;
+            margin-top: 15px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
     <h1>Carrito de Compra</h1>
-    <p class="subtitle">Tu espacio para reservar productos</p>
-    <div class="card">
-        <h2>Productos disponibles</h2>
-        <ul>
-            <li>Carrito Profesional - $25.000</li>
-            <li>Carrito para Principiante - $12.000</li>
-            <li>Entrada Invitado - Gratis</li>
-        </ul>
-        <p>Esta sección es un ejemplo de carrito de compra simple.</p>
+    <p class="subtitle">Compra tu Auto 0 km y envía el pedido por WhatsApp</p>
+
+    <div class="product-card">
+        <img class="product-image" src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80" alt="Auto 0 km">
+        <div class="product-info">
+            <h2>Auto 0 km</h2>
+            <p><strong>Precio:</strong> $25.000.000</p>
+            <p>Auto nuevo, 0 km. Incluye detalles de carrocería, accesorios y garantía.</p>
+
+            <label for="cantidad">¿Cuántas unidades deseas?</label>
+            <input type="number" id="cantidad" min="1" value="1">
+
+            <button id="addToCartButton">Agregar al carrito</button>
+        </div>
     </div>
-    <button class="back-button" onclick="window.location.href='menu.html'">Volver al Menú</button>
+
+    <div class="cart-card">
+        <h2>Resumen del carrito</h2>
+        <div id="cartContent"></div>
+        <div class="cart-actions">
+            <button class="button-whatsapp" id="sendWhatsAppButton">Enviar pedido por WhatsApp</button>
+            <button class="button-clear" id="clearCartButton">Vaciar carrito</button>
+            <button class="button-back" onclick="window.location.href='menu.html'">Volver al Menú</button>
+        </div>
+    </div>
+
+    <script>
+        const producto = {
+            nombre: 'Auto 0 km',
+            precio: 25000000,
+            descripcion: 'Auto nuevo, 0 km.',
+        };
+        const vendedorTelefono = '56912345678';
+        const cartKey = 'carritoCompra';
+
+        const datosUsuario = JSON.parse(localStorage.getItem('datosUsuario'));
+        if (!datosUsuario) {
+            window.location.href = 'index.html';
+        }
+
+        function cargarCarrito() {
+            return JSON.parse(localStorage.getItem(cartKey)) || [];
+        }
+
+        function guardarCarrito(items) {
+            localStorage.setItem(cartKey, JSON.stringify(items));
+        }
+
+        function formatearPrecio(valor) {
+            return valor.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' });
+        }
+
+        function mostrarCarrito() {
+            const carrito = cargarCarrito();
+            const cartContent = document.getElementById('cartContent');
+
+            if (carrito.length === 0) {
+                cartContent.innerHTML = '<div class="empty-cart">No hay productos en el carrito.</div>';
+                return;
+            }
+
+            const total = carrito.reduce((suma, item) => suma + item.precio * item.cantidad, 0);
+
+            let html = '<table class="cart-items">';
+            html += '<thead><tr><th>Producto</th><th>Cantidad</th><th>Precio unidad</th><th>Subtotal</th></tr></thead>';
+            html += '<tbody>';
+            carrito.forEach(item => {
+                html += `<tr><td>${item.nombre}</td><td>${item.cantidad}</td><td>${formatearPrecio(item.precio)}</td><td>${formatearPrecio(item.precio * item.cantidad)}</td></tr>`;
+            });
+            html += '</tbody></table>';
+            html += `<div class="cart-total">Total: ${formatearPrecio(total)}</div>`;
+            cartContent.innerHTML = html;
+        }
+
+        function agregarAlCarrito(cantidad) {
+            const carrito = cargarCarrito();
+            const existente = carrito.find(item => item.nombre === producto.nombre);
+            if (existente) {
+                existente.cantidad += cantidad;
+            } else {
+                carrito.push({ ...producto, cantidad });
+            }
+            guardarCarrito(carrito);
+            mostrarCarrito();
+            alert('Producto agregado al carrito.');
+        }
+
+        document.getElementById('addToCartButton').addEventListener('click', function(event) {
+            event.preventDefault();
+            const cantidad = parseInt(document.getElementById('cantidad').value, 10);
+            if (isNaN(cantidad) || cantidad <= 0) {
+                alert('Ingresa una cantidad válida.');
+                return;
+            }
+            agregarAlCarrito(cantidad);
+        });
+
+        document.getElementById('clearCartButton').addEventListener('click', function() {
+            if (confirm('¿Estás seguro de que quieres vaciar el carrito?')) {
+                guardarCarrito([]);
+                mostrarCarrito();
+            }
+        });
+
+        document.getElementById('sendWhatsAppButton').addEventListener('click', function() {
+            const carrito = cargarCarrito();
+            if (carrito.length === 0) {
+                alert('El carrito está vacío. Agrega algún producto primero.');
+                return;
+            }
+
+            const total = carrito.reduce((suma, item) => suma + item.precio * item.cantidad, 0);
+            let mensaje = 'Hola, quiero comprar los siguientes productos:%0A';
+            carrito.forEach(item => {
+                mensaje += `- ${item.nombre}: ${item.cantidad} unidad(es), subtotal ${formatearPrecio(item.precio * item.cantidad)}%0A`;
+            });
+            mensaje += '\nTotal: ' + formatearPrecio(total) + '\n';
+            mensaje += 'Por favor, confirma la compra.';
+
+            const url = `https://wa.me/${vendedorTelefono}?text=${encodeURIComponent(mensaje)}`;
+            window.open(url, '_blank');
+        });
+
+        mostrarCarrito();
+    </script>
 </body>
 </html>
